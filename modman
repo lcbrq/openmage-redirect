@@ -1,0 +1,3 @@
+app/code/local/LCB/Redirect
+app/etc/modules/LCB_Redirect.xml
+app/locale/pl_PL/LCB_Redirect.csv

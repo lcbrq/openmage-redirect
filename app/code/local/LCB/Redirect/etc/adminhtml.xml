@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <catalog>
+            <children>
+                <lcb_redirect translate="title" module="lcb_redirect">
+                    <title>Redirects</title>
+                    <action>adminhtml/redirectUrl</action>
+                    <sort_order>2000</sort_order>
+                </lcb_redirect>
+            </children>
+        </catalog>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <catalog>
+                        <children>
+                            <lcb_redirect>
+                                <title>LCB Redirects</title>
+                            </lcb_redirect>
+                        </children>
+                    </catalog>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
