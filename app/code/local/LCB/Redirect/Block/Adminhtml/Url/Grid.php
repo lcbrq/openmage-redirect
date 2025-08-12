@@ -22,23 +22,32 @@ class LCB_Redirect_Block_Adminhtml_Url_Grid extends Mage_Adminhtml_Block_Widget_
     {
         $this->addColumn('entity_id', [
             'header' => Mage::helper('lcb_redirect')->__('ID'),
+            'header_export' => 'id',
             'index'  => 'entity_id',
             'width'  => '50px',
         ]);
+
         $this->addColumn('redirect_from', [
             'header' => Mage::helper('lcb_redirect')->__('Redirect From'),
+            'header_export' => 'redirect_from',
             'index'  => 'redirect_from',
         ]);
+
         $this->addColumn('redirect_to', [
             'header' => Mage::helper('lcb_redirect')->__('Redirect To'),
+            'header_export' => 'redirect_to',
             'index'  => 'redirect_to',
         ]);
+
         $this->addColumn('redirect_type', [
             'header'  => Mage::helper('lcb_redirect')->__('Redirect Type'),
+            'header_export' => 'redirect_type',
             'index'   => 'redirect_type',
             'type'    => 'options',
             'options' => [301 => '301', 302 => '302'],
         ]);
+
+        $this->addExportType('*/*/export', Mage::helper('complaint')->__('CSV'));
 
         return parent::_prepareColumns();
     }
@@ -60,5 +69,24 @@ class LCB_Redirect_Block_Adminhtml_Url_Grid extends Mage_Adminhtml_Block_Widget_
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/edit', ['id' => $row->getId()]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMainButtonsHtml()
+    {
+        $html = parent::getMainButtonsHtml();
+
+        $action = $this->getUrl('*/*/import');
+        $formKey = Mage::getSingleton('core/session')->getFormKey();
+
+        $html .= '<form id="lcb_redirect_import_form" action="' . $action . '" method="post" enctype="multipart/form-data" style="display:inline;">
+              <input type="hidden" name="form_key" value="' . $formKey . '"/>
+              <input type="file" id="lcb_redirect_import_input" name="file" accept=".csv" style="display:none"
+                     onchange="document.getElementById(\'lcb_redirect_import_form\').submit();"/>
+        </form>';
+
+        return $html;
     }
 }

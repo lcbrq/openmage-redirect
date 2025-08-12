@@ -10,7 +10,6 @@ class LCB_Redirect_Adminhtml_RedirectUrlController extends Mage_Adminhtml_Contro
         return Mage::getSingleton('admin/session')->isAllowed('catalog/lcb_redirect');
     }
 
-
     /**
      * @return void
      */
@@ -109,5 +108,66 @@ class LCB_Redirect_Adminhtml_RedirectUrlController extends Mage_Adminhtml_Contro
             }
         }
         $this->_redirect('*/*/');
+    }
+
+    /**
+     * Export to CSV format
+     *
+     * @return void
+     */
+    public function exportAction()
+    {
+        $fileName = 'redirects.csv';
+        $grid = $this->getLayout()->createBlock('lcb_redirect/adminhtml_url_grid');
+        $this->_prepareDownloadResponse($fileName, $grid->getCsvFile());
+    }
+
+    /**
+     * Import from CSV format
+     *
+     * @return $this;
+     */
+    public function importAction()
+    {
+        try {
+            if (!empty($_FILES['file']['name'])) {
+                $csv = new Varien_File_Csv();
+                $csv->setDelimiter(',');
+                $csv->setEnclosure('"');
+                $data = $csv->getData($_FILES['file']['tmp_name']);
+
+                if (!$data || count($data) < 2) {
+                    Mage::throwException('CSV is empty or missing header.');
+                }
+
+                $header = array_shift($data);
+
+                $rows = [];
+                foreach ($data as $row) {
+                    $row = array_pad($row, count($header), '');
+                    $rows[] = array_combine($header, $row);
+                }
+
+                $i = 0;
+                foreach ($rows as $rowData) {
+                    $url = Mage::getModel('lcb_redirect/url')->load($rowData['id']);
+                    unset($rowData['id']);
+                    try {
+                        $url->addData($rowData)->save();
+                        $i++;
+                    } catch (\Exception $e) {
+                        Mage::getSingleton('adminhtml/session')->addNotice($e->getMessage());
+                    }
+                }
+
+                Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Imported %s rows', $i));
+            } else {
+                Mage::getSingleton('adminhtml/session')->addError($this->__('No file selected.'));
+            }
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+        }
+
+        return $this->_redirectReferer();
     }
 }
