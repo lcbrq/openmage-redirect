@@ -47,7 +47,7 @@ class LCB_Redirect_Block_Adminhtml_Url_Grid extends Mage_Adminhtml_Block_Widget_
             'options' => [301 => '301', 302 => '302'],
         ]);
 
-        $this->addExportType('*/*/export', Mage::helper('complaint')->__('CSV'));
+        $this->addExportType('*/*/export', Mage::helper('lcb_redirect')->__('CSV'));
 
         return parent::_prepareColumns();
     }
