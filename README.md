@@ -2,6 +2,7 @@
 
 Add grid with from to redirect usage.
 
-### Version
+# Changelog
 
-Beta
+*1.1.0* - Add support for customer groups
+*1.0.0* - Initial commit

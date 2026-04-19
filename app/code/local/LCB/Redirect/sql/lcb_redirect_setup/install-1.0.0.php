@@ -21,6 +21,10 @@ $table = $installer->getConnection()
         'nullable'  => false,
         'default'   => 301
     ], 'Redirect Type')
+    ->addColumn('customer_group_ids', Varien_Db_Ddl_Table::TYPE_TEXT, 255, [
+        'nullable'  => true,
+        'default'   => null,
+    ], 'Customer Group IDs')
     ->addIndex($installer->getIdxName('lcb_redirect/url', ['redirect_from']), ['redirect_from'], ['type' => 'unique'])
     ->setComment('LCB Redirect URL Table');
 

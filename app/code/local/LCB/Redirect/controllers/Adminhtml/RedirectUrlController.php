@@ -51,6 +51,10 @@ class LCB_Redirect_Adminhtml_RedirectUrlController extends Mage_Adminhtml_Contro
     public function saveAction()
     {
         if ($data = $this->getRequest()->getPost()) {
+            if (!isset($data['customer_group_ids'])) {
+                $data['customer_group_ids'] = array('');
+            }
+
             $id = $this->getRequest()->getParam('id');
             $model = Mage::getModel('lcb_redirect/url')->load($id);
             $model->addData($data);
@@ -152,6 +156,10 @@ class LCB_Redirect_Adminhtml_RedirectUrlController extends Mage_Adminhtml_Contro
                 foreach ($rows as $rowData) {
                     $url = Mage::getModel('lcb_redirect/url')->load($rowData['id']);
                     unset($rowData['id']);
+                    if (!isset($rowData['customer_group_ids'])) {
+                        $rowData['customer_group_ids'] = null;
+                    }
+
                     try {
                         $url->addData($rowData)->save();
                         $i++;

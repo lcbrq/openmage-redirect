@@ -55,5 +55,13 @@ class LCB_Redirect_Block_Adminhtml_Url_Edit_Form extends Mage_Adminhtml_Block_Wi
                 302 => '302',
             ],
         ));
+
+        $fieldset->addField('customer_group_ids', 'multiselect', array(
+            'name' => 'customer_group_ids[]',
+            'label' => $this->__('Customer Groups'),
+            'title' => $this->__('Customer Groups'),
+            'values' => Mage::getSingleton('lcb_redirect/system_config_source_customerGroups')->toOptionArray(),
+            'value' => array(''),
+        ));
     }
 }

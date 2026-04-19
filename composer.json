@@ -2,7 +2,7 @@
     "name": "lcbrq/openmage-redirect",
     "description": "Simple redirect management module",
     "type": "magento-module",
-    "version": "beta",
+    "version": "1.0.0",
     "license": "MIT",
     "require": {},
     "extra": {

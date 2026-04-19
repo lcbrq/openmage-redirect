@@ -47,6 +47,12 @@ class LCB_Redirect_Block_Adminhtml_Url_Grid extends Mage_Adminhtml_Block_Widget_
             'options' => [301 => '301', 302 => '302'],
         ]);
 
+        $this->addColumn('customer_group_ids', [
+            'header' => Mage::helper('lcb_redirect')->__('Customer Groups'),
+            'header_export' => 'customer_group_ids',
+            'index' => 'customer_group_ids',
+        ]);
+
         $this->addExportType('*/*/export', Mage::helper('lcb_redirect')->__('CSV'));
 
         return parent::_prepareColumns();

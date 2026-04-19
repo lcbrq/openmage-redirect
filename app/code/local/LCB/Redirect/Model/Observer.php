@@ -21,7 +21,6 @@ class LCB_Redirect_Model_Observer
         }
 
         $url = Mage::helper('core/url')->getCurrentUrl();
-
         /** @var LCB_Redirect_Model_Url $redirect */
         $redirect = Mage::getModel('lcb_redirect/url')->getCollection()
             ->addFieldToFilter('redirect_from', ['eq' => $url])
@@ -29,10 +28,15 @@ class LCB_Redirect_Model_Observer
 
         if ($redirect && $redirect->getId()) {
             $redirectTo = $redirect->getRedirectTo();
-            $redirectType = (int)$redirect->getRedirectType();
+            $redirectType = (int) $redirect->getRedirectType();
 
             if (!preg_match('#^https?://#', $redirectTo)) {
                 $redirectTo = Mage::getBaseUrl() . ltrim($redirectTo, '/');
+            }
+
+            $groupIds = array_filter(explode(',', (string) $redirect->getData('customer_group_ids')), 'strlen');
+            if ($groupIds && !in_array(Mage::getSingleton('customer/session')->getCustomerGroupId(), $groupIds)) {
+                return;
             }
 
             $response->setRedirect($redirectTo, $redirectType);
