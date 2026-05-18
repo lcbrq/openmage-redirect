@@ -5,10 +5,7 @@ class LCB_Redirect_Adminhtml_RedirectUrlController extends Mage_Adminhtml_Contro
     /**
      * @inheritDoc
      */
-    protected function _isAllowed()
-    {
-        return Mage::getSingleton('admin/session')->isAllowed('catalog/lcb_redirect');
-    }
+    public const ADMIN_RESOURCE = 'catalog/lcb_redirect';
 
     /**
      * @return void
